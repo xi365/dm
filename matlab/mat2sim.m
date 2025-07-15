@@ -14,12 +14,12 @@ blockPath = find_system(model,'Type','Block');
 block = [model '/Transport Delay']; 
 blockHandle = get_param(block, 'Handle');
 % 设置时延参数
-set_param(blockHandle, 'DelayTime', '0.0020');
+set_param(blockHandle, 'DelayTime', '0.002');
 % 获取模块Transport Delay句柄
 block1 = [model '/Transport Delay1']; 
 blockHandle1 = get_param(block1, 'Handle');
 % 设置时延参数
-set_param(blockHandle1, 'DelayTime', '0.0071');
+set_param(blockHandle1, 'DelayTime', '0.00131');
 % 保存更改
 save_system(model);
 %% matlab调用simulink仿真
