@@ -1,0 +1,180 @@
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public License
+// along with this program.  If not, see http://www.gnu.org/licenses/.
+// 
+package TSNScheSec.simulations.TSNExpand;
+import ned.DatarateChannel;
+import nesting.node.ethernet.VlanEtherHostQ;
+import nesting.node.ethernet.VlanEtherHostSched;
+import nesting.node.ethernet.VlanEtherSwitchPreemptable;
+import inet.networklayer.configurator.ipv4.Ipv4NetworkConfigurator;
+import nesting.node.nesting.NestingStandardHost;
+package TSNScheSec.simulations;
+
+network TSNExpand
+{
+    @display("bgb=1293.5,1017.89996,white;bgl=7");
+    types:
+        channel C extends DatarateChannel
+        {
+            delay = 0.1us;
+            datarate = 100Mbps;
+        }
+    submodules:
+        TSNswitch4: VlanEtherSwitchPreemptable {
+            @display("p=396.5,533");
+            gates:
+                ethg[3];
+        }
+        configurator: Ipv4NetworkConfigurator { // network autoconfiguration
+            @display("p=1153.477,108.3077");
+        }
+        C2: NestingStandardHost {
+            @display("i=extra/plc1;p=499.19998,699.39996");
+            gates:
+                ethg[1];
+        }
+        C1: NestingStandardHost {
+            @display("i=extra/plc1;p=273,698.1");
+            gates:
+                ethg[1];
+        }
+        EM3: NestingStandardHost {
+            @display("i=extra/motor1;p=422.5,851.5");
+            gates:
+                ethg[1];
+        }
+        EM2: NestingStandardHost {
+            @display("i=extra/motor1;p=314.6,848.89996");
+            gates:
+                ethg[1];
+        }
+        TSNswitch2: VlanEtherSwitchPreemptable {
+            @display("p=430.5231,379.07693");
+            gates:
+                ethg[7];
+        }
+        TSNswitch3: VlanEtherSwitchPreemptable {
+            @display("p=815.01544,379.07693");
+            gates:
+                ethg[6];
+        }
+        DS: NestingStandardHost {
+            @display("i=device/server2;p=498.21542,231.5077");
+            gates:
+                ethg[1];
+        }
+        ES: NestingStandardHost {
+            parameters:
+                @display("i=device/pc;p=384.49234,231.5077");
+            gates:
+                ethg[2];
+        }
+        OS: NestingStandardHost {
+            @display("i=device/pc;p=261.29233,231.5077");
+            gates:
+                ethg[2];
+        }
+        MW: NestingStandardHost {
+            @display("i=device/pc3");
+            gates:
+                ethg[1];
+        }
+        VSS: NestingStandardHost {
+            @display("i=device/server2;p=985.60004,215.26155");
+            gates:
+                ethg[1];
+        }
+        CAM1: NestingStandardHost {
+            @display("i=extra/carema1;p=760.5,837.2");
+            gates:
+                ethg[1];
+        }
+        AH1: NestingStandardHost {
+            parameters:
+                @display("i=device/lan;p=544.2462,108.3077;is=l");
+            gates:
+                ethg[1];
+        }
+        AH2: NestingStandardHost {
+            parameters:
+                @display("i=device/lan;p=763.5693,108.3077;is=l");
+            gates:
+                ethg[1];
+        }
+        TSNswitch1: VlanEtherSwitchPreemptable {
+            @display("p=657.9693,186.83078");
+            gates:
+                ethg[4];
+        }
+        CNC: NestingStandardHost {
+            @display("i=device/pc2;p=690.3,530.39996");
+            gates:
+                ethg[7];
+        }
+        EM4: NestingStandardHost {
+            @display("i=extra/motor1;p=560.3,854.1");
+            gates:
+                ethg[1];
+        }
+        EM1: NestingStandardHost {
+            @display("i=extra/motor1;p=196.3,846.3");
+            gates:
+                ethg[1];
+        }
+        CAM2: NestingStandardHost {
+            @display("i=extra/carema1;p=885.3,839.8");
+            gates:
+                ethg[1];
+        }
+        TSNswitch7: VlanEtherSwitchPreemptable {
+            @display("p=821.6,700.7");
+            gates:
+                ethg[2];
+        }
+    connections:
+        TSNswitch2.ethg[1] <--> C <--> DS.ethg[0];
+        TSNswitch2.ethg[2] <--> C <--> ES.ethg[0];
+        TSNswitch2.ethg[3] <--> C <--> OS.ethg[0];
+        TSNswitch2.ethg[4] <--> C <--> TSNswitch3.ethg[0];
+
+        TSNswitch3.ethg[1] <--> C <--> MW.ethg[0];
+        TSNswitch1.ethg[2] <--> C <--> TSNswitch2.ethg[5];
+
+        AH1.ethg[0] <--> C <--> TSNswitch1.ethg[0];
+        AH2.ethg[0] <--> C <--> TSNswitch1.ethg[1];
+
+
+        AH2.ethg[0] <--> C <--> TSNswitch1.ethg[0];
+
+
+        AH2.ethg[0] <--> C <--> TSNswitch1.ethg[0];
+
+
+        CNC.ethg[0] <--> TSNswitch2.ethg[0];
+        CNC.pppg[0] <--> TSNswitch3.ethg[0];
+        TSNswitch3.ethg[0] <--> VSS.ethg[0];
+        TSNswitch3.ethg[0] <--> TSNswitch1.ethg[0];
+        C2.ethg[0] <--> TSNswitch4.ethg[0];
+        C1.ethg[0] <--> TSNswitch4.ethg[0];
+        TSNswitch4.ethg[0] <--> TSNswitch2.ethg[0];
+        TSNswitch4.ethg[0] <--> CNC.ethg[0];
+        TSNswitch7.ethg[0] <--> CAM1.ethg[0];
+        TSNswitch7.ethg[0] <--> CAM2.ethg[0];
+        TSNswitch7.ethg[0] <--> CNC.ethg[0];
+        TSNswitch7.ethg[0] <--> TSNswitch3.ethg[0];
+        C1.pppg[0] <--> EM1.pppg[0];
+        C1.ethg[0] <--> EM2.ethg[0];
+        C2.ethg[0] <--> EM3.ethg[0];
+        C2.ethg[0] <--> EM4.ethg[0];
+}
